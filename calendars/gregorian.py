@@ -22,4 +22,4 @@ class Gregorian(BaseCalendar):
         """
         convert date to Gregorian system
         """
-        return date
+        return date.year, date.month, date.day, date.weekday()
