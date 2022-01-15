@@ -11,11 +11,11 @@ app = FastAPI()
 
 
 @app.get("/")
-async def today(languages=('en',)):
+async def today(lang='en'):
     date = datetime.today()
     response = {}
     for cls in calendars.order:
-        calender = cls(languages)
+        calender = cls(lang)
         response.update({calender.name :calender.get_today_representation(date)})
     return JSONResponse(status_code=status.HTTP_200_OK, content=response)
 
