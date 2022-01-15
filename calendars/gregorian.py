@@ -13,19 +13,15 @@ class Gregorian(BaseCalendar):
     """
     name = 'gregorian'
 
-    def get_today_representation(self, today):
+    def __init__(self, languages):
         """
-        input: today datetime object
-        return: Gregorian calendar representation
+
         """
-        representation = {'day': today.day, 'month': [], 'year': today.year, 'weekday': []}
-        for key, value in representation.items():
-            for lang in self.languages:
-                if isinstance(value, list):
-                    try:
-                        description = getattr(gre_representation, f'{key.upper()}_{lang.upper()}')
-                        code = getattr(today, key)() if key == 'weekday' else getattr(today, key)
-                        value.append({lang: description[code]})
-                    except KeyError:
-                        logging.critical(traceback.format_exc())
-        return representation
+        super().__init__(languages)
+        self.calender_description = gre_representation
+
+    def convert(self, date):
+        """
+
+        """
+        return date

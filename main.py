@@ -16,7 +16,7 @@ async def today(lang='en'):
     response = {}
     for cls in calendars.order:
         calender = cls(lang)
-        response.update({calender.name :calender.get_today_representation(date)})
+        response.update({calender.name :calender.get_date(date)})
     return JSONResponse(status_code=status.HTTP_200_OK, content=response)
 
 if __name__ == "__main__":
