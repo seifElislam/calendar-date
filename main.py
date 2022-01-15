@@ -7,9 +7,21 @@ from random import randint
 import uvicorn
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 import calendars
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 with open('quotes/wiki_quotes.json') as f:
     quotes = json.load(f)
