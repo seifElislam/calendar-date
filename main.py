@@ -2,12 +2,17 @@
 APP module
 """
 from datetime import datetime
+import json
+from random import randint
 import uvicorn
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
 import calendars
 
 app = FastAPI()
+
+with open('quotes/wiki_quotes.json') as f:
+    quotes = json.load(f)
 
 
 @app.get("/")
@@ -17,6 +22,7 @@ async def today(lang='en'):
     for cls in calendars.order:
         calender = cls(lang)
         response.update({calender.name: calender.get_date(date)})
+    response.update({'quote': quotes[randint(0, len(quotes)-1)]})
     return JSONResponse(status_code=status.HTTP_200_OK, content=response)
 
 
