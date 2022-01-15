@@ -40,12 +40,12 @@ class BaseCalendar(ABC):
     @abstractmethod
     def convert(self, date):
         """
-        
+        convert date to calendar system
         """
         
     def get_date(self, date):
         """
-
+        get date calendar representation
         """
         converted_date = self.convert(date)
         return self.get_date_representation(converted_date)
