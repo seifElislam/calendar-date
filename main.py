@@ -1,9 +1,10 @@
 """
 APP module
 """
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 from random import randint
+import pytz
 import uvicorn
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
@@ -29,7 +30,7 @@ with open('quotes/wiki_quotes.json') as f:
 
 @app.get("/")
 async def today(lang='en'):
-    date = datetime.today()
+    date = datetime.now(tz=pytz.timezone('Africa/Cairo'))
     response = {}
     for cls in calendars.order:
         calender = cls(lang)
