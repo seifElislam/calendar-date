@@ -2,7 +2,9 @@
 
 """
 from .gregorian import Gregorian
+from .hijri import Hijri
 
 order = [
-    Gregorian
+    Gregorian,
+    Hijri
 ]

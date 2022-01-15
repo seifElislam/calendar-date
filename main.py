@@ -16,8 +16,9 @@ async def today(lang='en'):
     response = {}
     for cls in calendars.order:
         calender = cls(lang)
-        response.update({calender.name :calender.get_date(date)})
+        response.update({calender.name: calender.get_date(date)})
     return JSONResponse(status_code=status.HTTP_200_OK, content=response)
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
