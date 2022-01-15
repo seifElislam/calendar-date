@@ -34,6 +34,8 @@ class BaseCalendar(ABC):
                         value.append({lang: description[kwargs[key]]})
                     except KeyError:
                         logging.critical(traceback.format_exc())
+                    except AttributeError:
+                        logging.critical(f'{lang} is not supported')
         return representation
 
     @abstractmethod
