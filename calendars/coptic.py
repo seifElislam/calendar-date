@@ -23,5 +23,5 @@ class Coptic(BaseCalendar):
         """
         convert date to Coptic system
         """
-        year, month, day = convertdate.islamic.from_gregorian(date.year, date.month, date.day)
+        year, month, day = convertdate.coptic.from_gregorian(date.year, date.month, date.day)
         return year, month, day, date.weekday()
