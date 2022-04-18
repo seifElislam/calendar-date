@@ -24,7 +24,7 @@ app.add_middleware(
 )
 
 
-with open('quotes/wiki_quotes.json') as f:
+with open('quotes/wiki_quotes.json',encoding="utf8") as f:
     quotes = json.load(f)
 
 
