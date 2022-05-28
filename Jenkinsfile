@@ -9,7 +9,7 @@ pipeline {
         stage('Code linting') {
             steps {
                 sh 'pip install -r requirements.txt'
-                echo 'Code is being linting now'
+                sh 'pylint calendars/'
             }
         }
 
