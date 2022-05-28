@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.7-alpine'
+        }
+    }
     stages {
 
         stage('Code linting') {
