@@ -8,7 +8,7 @@ import traceback
 
 class BaseCalendar(ABC):
     """
-
+    Base Calendar
     """
     name = 'base'
 
@@ -35,7 +35,7 @@ class BaseCalendar(ABC):
                     except KeyError:
                         logging.critical(traceback.format_exc())
                     except AttributeError:
-                        logging.critical(f'{lang} is not supported')
+                        logging.critical('%s is not supported', lang)
         return representation
 
     @abstractmethod
