@@ -3,6 +3,11 @@ pipeline {
     stages {
 
         stage('Code linting') {
+         agent {
+                docker {
+                    image 'python:3.7-alpine'
+                }
+            }
             steps {
                 sh 'pip install -r requirements.txt'
                 echo 'Code is being linting now'
