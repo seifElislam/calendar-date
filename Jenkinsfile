@@ -11,18 +11,21 @@ pipeline {
                 echo 'Code is being linting now'
             }
         }
+
         stage('Test') {
             steps {
                 sh 'pytest'
             }
         }
-        stage('uild') {
+
+        stage('Build') {
          steps {
             sh(script: """
                docker build -t calender_app .
             """)
          }
       }
+
         stage('Push')  {
           steps {
               dir("$WORKSPACE") {
@@ -32,7 +35,7 @@ pipeline {
                       image.push()
                   }
               }
-              }
           }
+        }
     }
 }
