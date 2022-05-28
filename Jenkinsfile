@@ -5,6 +5,7 @@ pipeline {
         }
     }
     stages {
+
         stage('Code linting') {
             steps {
                 sh 'pip install -r requirements.txt'
@@ -26,16 +27,6 @@ pipeline {
          }
       }
 
-        stage('Push')  {
-          steps {
-              dir("$WORKSPACE") {
-              script {
-                  docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
-                      def image = docker.build('seifeleslam/calender_app:latest')
-                      image.push()
-                  }
-              }
-          }
-        }
+
     }
 }
