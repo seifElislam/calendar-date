@@ -1,7 +1,7 @@
 """
 APP module
 """
-from datetime import datetime, timezone
+from datetime import datetime
 import json
 from random import randint
 import pytz
@@ -28,13 +28,33 @@ with open('quotes/wiki_quotes.json') as f:
     quotes = json.load(f)
 
 
-@app.get("/")
-async def today(lang='en'):
-    date = datetime.now(tz=pytz.timezone('Africa/Cairo'))
+def validate_timezone(requested_timezone):
+    """
+    Validate requested timezone
+    """
+    if requested_timezone not in pytz.all_timezones_set:
+        return 'Africa/Cairo'
+    return requested_timezone
+
+
+def get_calendars_by_gregorian(gregorian_date, lang):
+    """
+    Get date in available calendars by gregorian date
+    """
     response = {}
     for cls in calendars.order:
         calender = cls(lang)
-        response.update({calender.name: calender.get_date(date)})
+        response.update({calender.name: calender.get_date(gregorian_date)})
+    return response
+
+
+@app.get("/")
+async def today(lang='en', timezone='Africa/Cairo'):
+    # validate timezone
+    valid_timezone = validate_timezone(timezone)
+    date = datetime.now(tz=pytz.timezone(valid_timezone))
+
+    response = get_calendars_by_gregorian(date, lang)
     response.update({'quote': quotes[randint(0, len(quotes)-1)]})
     return JSONResponse(status_code=status.HTTP_200_OK, content=response)
 
