@@ -11,6 +11,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import calendars
 from utils import FindRequestBody, validate_timezone
+from descriptions.languages import supported_languages
 
 app = FastAPI()
 
@@ -58,6 +59,33 @@ async def jump_to_date(request_body: FindRequestBody):
     response = get_calendars_by_gregorian(requested_date, request_body.language)
     response.update({'quote': quotes[randint(0, len(quotes) - 1)]})
     return JSONResponse(status_code=status.HTTP_200_OK, content=response)
+
+
+@app.get('/calendars/')
+async def get_supported_calendars(lang='en'):
+    """
+
+    """
+    supported_calenders = {
+        cls(lang).name: getattr(cls(lang).calender_description, 'NAME_{}'.format(lang.upper()))
+        for cls in calendars.order}
+    return JSONResponse(status_code=200, content={'calendars': supported_calenders})
+
+
+@app.get('/calendars/{calendar_name}/months')
+async def get_calendar_month_description(calendar_name, lang='en'):
+    """
+
+    """
+    # validate languages
+    if lang not in supported_languages:
+        return JSONResponse(status_code=400, content={"error": "Not supported language"})
+    requested_calendars = [cls for cls in calendars.order if cls.name == calendar_name]
+    if not requested_calendars:
+        return JSONResponse(status_code=400, content={"error": "Invalid calendar"})
+    calendar_obj = requested_calendars[0](lang)
+    return JSONResponse(status_code=200, content={
+        'months': getattr(calendar_obj.calender_description, 'MONTH_{}'.format(lang.upper()))})
 
 
 if __name__ == "__main__":
