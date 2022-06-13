@@ -51,3 +51,5 @@ MONTH_ARA = {
     12: 'ديسمبر'
 }
 
+NAME_ARA = 'ميلادى'
+NAME_EN = 'Gregorian'

@@ -4,11 +4,12 @@ Base Calendar
 from abc import ABC, abstractmethod
 import logging
 import traceback
+from descriptions.languages import supported_languages
 
 
 class BaseCalendar(ABC):
     """
-
+    Base Calendar
     """
     name = 'base'
 
@@ -16,8 +17,13 @@ class BaseCalendar(ABC):
         """
 
         """
-        self.languages = languages.split(',')
+        self.languages = self.validate_languages(languages)
         self.calender_description = None
+
+    @staticmethod
+    def validate_languages(languages):
+        valid_languages = [lang for lang in languages.split(',') if lang in supported_languages]
+        return valid_languages if valid_languages else ['en']
 
     def get_date_representation(self, **kwargs):
         """
@@ -35,11 +41,17 @@ class BaseCalendar(ABC):
                     except KeyError:
                         logging.critical(traceback.format_exc())
                     except AttributeError:
-                        logging.critical(f'{lang} is not supported')
+                        logging.critical('%s is not supported', lang)
         return representation
 
     @abstractmethod
     def convert(self, date):
+        """
+        convert date to calendar system
+        """
+
+    @abstractmethod
+    def convert_to_gregorian_date(self, year, month, day, timezone):
         """
         convert date to calendar system
         """

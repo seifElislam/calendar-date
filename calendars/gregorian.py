@@ -1,6 +1,8 @@
 """
 Gregorian calendar
 """
+import pytz
+from datetime import datetime
 from calendars.base import BaseCalendar
 import descriptions.gregorian as gre_representation
 
@@ -23,3 +25,10 @@ class Gregorian(BaseCalendar):
         convert date to Gregorian system
         """
         return date.year, date.month, date.day, date.weekday()
+
+    def convert_to_gregorian_date(self, year, month, day, timezone):
+        """
+
+        """
+        return pytz.timezone(timezone).localize(
+            datetime(year=year, month=month, day=day, tzinfo=timezone))
