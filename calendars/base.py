@@ -50,6 +50,12 @@ class BaseCalendar(ABC):
         convert date to calendar system
         """
 
+    @abstractmethod
+    def convert_to_gregorian_date(self, year, month, day, timezone):
+        """
+        convert date to calendar system
+        """
+
     def get_date(self, date):
         """
         get date calendar representation
