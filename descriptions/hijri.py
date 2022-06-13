@@ -51,3 +51,5 @@ MONTH_ARA = {
     12: 'ذو الحجة'
 }
 
+NAME_ARA = 'هجرى'
+NAME_EN = 'Hijri'

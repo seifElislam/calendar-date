@@ -51,3 +51,5 @@ MONTH_ARA = {
     12: 'مسرى'
 }
 
+NAME_ARA = 'قبطى'
+NAME_EN = 'Coptic'
