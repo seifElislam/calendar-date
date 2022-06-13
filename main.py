@@ -10,6 +10,7 @@ from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import calendars
+from utils import FindRequestBody, validate_timezone
 
 app = FastAPI()
 
@@ -23,18 +24,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 with open('quotes/wiki_quotes.json') as f:
     quotes = json.load(f)
-
-
-def validate_timezone(requested_timezone):
-    """
-    Validate requested timezone
-    """
-    if requested_timezone not in pytz.all_timezones_set:
-        return 'Africa/Cairo'
-    return requested_timezone
 
 
 def get_calendars_by_gregorian(gregorian_date, lang):
@@ -55,7 +46,17 @@ async def today(lang='en', timezone='Africa/Cairo'):
     date = datetime.now(tz=pytz.timezone(valid_timezone))
 
     response = get_calendars_by_gregorian(date, lang)
-    response.update({'quote': quotes[randint(0, len(quotes)-1)]})
+    response.update({'quote': quotes[randint(0, len(quotes) - 1)]})
+    return JSONResponse(status_code=status.HTTP_200_OK, content=response)
+
+
+@app.post("/jump/")
+async def jump_to_date(request_body: FindRequestBody):
+    calendar_class = [cls for cls in calendars.order if cls.name == request_body.calendar][0]
+    requested_date = calendar_class(request_body.language).convert_to_gregorian_date(
+        request_body.year, request_body.month, request_body.day, request_body.timezone)
+    response = get_calendars_by_gregorian(requested_date, request_body.language)
+    response.update({'quote': quotes[randint(0, len(quotes) - 1)]})
     return JSONResponse(status_code=status.HTTP_200_OK, content=response)
 
 
