@@ -46,7 +46,8 @@ async def today(lang='en', timezone='Africa/Cairo'):
     valid_timezone = validate_timezone(timezone)
     date = datetime.now(tz=pytz.timezone(valid_timezone))
 
-    response = get_calendars_by_gregorian(date, lang)
+    calendars_date = get_calendars_by_gregorian(date, lang)
+    response = {'calendars': calendars_date}
     response.update({'quote': quotes[randint(0, len(quotes) - 1)]})
     return JSONResponse(status_code=status.HTTP_200_OK, content=response)
 
@@ -56,7 +57,8 @@ async def jump_to_date(request_body: FindRequestBody):
     calendar_class = [cls for cls in calendars.order if cls.name == request_body.calendar][0]
     requested_date = calendar_class(request_body.language).convert_to_gregorian_date(
         request_body.year, request_body.month, request_body.day, request_body.timezone)
-    response = get_calendars_by_gregorian(requested_date, request_body.language)
+    calendars_date = get_calendars_by_gregorian(requested_date, request_body.language)
+    response = {'calendars': calendars_date}
     response.update({'quote': quotes[randint(0, len(quotes) - 1)]})
     return JSONResponse(status_code=status.HTTP_200_OK, content=response)
 

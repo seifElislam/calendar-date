@@ -33,11 +33,11 @@ class BaseCalendar(ABC):
         representation = {'day': kwargs['day'], 'month': [], 'year': kwargs['year'], 'weekday': []}
         for key, value in representation.items():
             for lang in self.languages:
-                if isinstance(value, list):
+                if key in ['month', 'weekday']:
                     try:
                         description = getattr(self.calender_description,
                                               f'{key.upper()}_{lang.upper()}')
-                        value.append({lang: description[kwargs[key]]})
+                        representation[key] = description[kwargs[key]]
                     except KeyError:
                         logging.critical(traceback.format_exc())
                     except AttributeError:
